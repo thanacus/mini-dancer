@@ -1,0 +1,20 @@
+{
+  "id": "mini-dancer",
+  "title": "Mini Dancer",
+  "version": "1.0.0",
+  "socket": true,
+  "compatibility": {
+    "minimum": "11",
+    "verified": "11"
+  },
+  "scripts": [
+    "scripts/mini-dancer.js"
+  ],
+  "authors": [
+    {
+      "name": "thanacus",
+      "discord": "thanacus",
+      "email": "thanacus@gmail.com"
+    }
+  ]
+}
