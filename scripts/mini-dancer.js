@@ -1,5 +1,6 @@
 let gViewport = null;
 let gMinis = null;
+let drawingLayer = null;
 
 const drawViewport = (viewport) => {
     let w = viewport.screenDimensions[0];
@@ -16,12 +17,14 @@ const drawViewport = (viewport) => {
         x+(w/2)/s, y+(h/2)/s
     ];
 
-    canvas.app.stage.removeChild(gViewport);
+    if(gViewport != null) {
+        drawingLayer.removeChild(gViewport);
+    }
     gViewport = new PIXI.Graphics();
     gViewport.beginFill(0x00DD00, 0.2);
     gViewport.drawRect(ul[0], ul[1], lr[0]-ul[0], lr[1]-ul[1]);
     gViewport.endFill();
-    canvas.app.stage.addChild(gViewport);
+    drawingLayer.addChild(gViewport);
 }
 
 const updateState = (viewport) => {
@@ -51,7 +54,7 @@ const drawMinis = (data, viewport) => {
     let dx = lr[0] - ul[0];
     let dy = lr[1] - ul[1];
 
-    canvas.app.stage.removeChild(gMinis);
+    drawingLayer.removeChild(gMinis);
     gMinis = new PIXI.Graphics();
 
     data.forEach(mini => {
@@ -63,7 +66,7 @@ const drawMinis = (data, viewport) => {
         gMinis.endFill(0x000000);
     });
 
-    canvas.app.stage.addChild(gMinis);
+    drawingLayer.addChild(gMinis);
 }
 
 let pulseDimensions = () => {};
@@ -75,12 +78,13 @@ pulseDimensions = () => {
             screenDimensions: game.canvas.screenDimensions
         }
     });
-    setTimeout(pulseDimensions, 400);
+    setTimeout(pulseDimensions, 3000);
 };
 
 Hooks.on("canvasReady", () => {
     if(game.user.isGM) {
         // GM workflow
+        drawingLayer = canvas.layers.filter(l => l instanceof TilesLayer)[0];
         game.socket.on('module.mini-dancer', (message) => {
             let type = message.type;
             let payload = message.payload;
