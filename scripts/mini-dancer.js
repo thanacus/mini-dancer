@@ -29,7 +29,7 @@ const drawViewport = (viewport) => {
 
 const updateState = (viewport) => {
     drawViewport(viewport);
-    fetch("/mini-dancer/coords")
+    fetch("http://localhost:5000/coords")
         .then(res => res.json())
         .then(data => {
             drawMinis(data, viewport);
